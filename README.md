@@ -23,6 +23,6 @@ The system has two open ports for management/communication:
 The server runs on a constantly running machine, and is managed from the GUI client.
 
 ## Warning
-1. As of this writing, I haven't actually written anything. So the following is the PLANS I have for the application.
+1. As of this writing, I haven't actually written anything. So the above is the PLANS I have for the application.
 2. The application is written in Scala, which I don't have much experience with. So expect both bugs and bad design. (I expect it will be a good learning experience for me, though).
 3. This is another of those "reinventing the wheel"-apps I like to write because I'm not satisified with the existing solutions out there. *If* I get a smartphone with google calendar synchronization, I will probably use that instead.
