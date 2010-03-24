@@ -4,7 +4,9 @@ import java.util.{Date, Calendar, Timer}
 
 object Reminder {
   def main(args: Array[String]) = {
-    val timer = new Timer()
+    // initialize the mailer (check that mail.properties file exists and is loadable)
+    Mailer.initialize
+    val timer = new Timer
     val checker = new Checker
     timer.scheduleAtFixedRate(checker, tomorrowNight, 1000 * 60 * 60 * 24)
   }
