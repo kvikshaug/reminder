@@ -7,10 +7,6 @@ import com.google.gson.{JsonObject, JsonDeserializationContext, JsonElement, Jso
 
 class ListDeserializer extends JsonDeserializer[ArrayList[DateTime]] {
   def deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): ArrayList[DateTime] = {
-    println("Parsing commences!")
-    println(json.toString)
-    println(json.asInstanceOf[JsonObject].getAsJsonArray("underlying").toString)
-
     val iterator = json.asInstanceOf[JsonObject].getAsJsonArray("underlying").iterator;
     val list = new ArrayList[DateTime]
     while(iterator.hasNext) {
