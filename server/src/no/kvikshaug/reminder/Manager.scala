@@ -1,7 +1,6 @@
 package no.kvikshaug.reminder
 
 import collection.jcl.ArrayList
-import com.google.gson.reflect.TypeToken
 import com.google.gson.{GsonBuilder}
 import data.{DateTimeSerializer, Event}
 import gson.{ListDeserializer, DateTimeDeserializer}
@@ -12,8 +11,6 @@ object Manager {
 
   def initialize = {
     events.add(new Event)
-
-    val eventType = new TypeToken[List[Event]]{}.getType
 
     val gsonbuilder = new GsonBuilder;
     gsonbuilder.registerTypeAdapter(classOf[DateTime], new DateTimeSerializer)
