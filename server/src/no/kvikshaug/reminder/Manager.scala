@@ -1,27 +1,35 @@
 package no.kvikshaug.reminder
 
-import data.Event
 import collection.jcl.ArrayList
-import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.google.gson.{GsonBuilder}
+import data.{DateTimeSerializer, Event}
+import gson.{ListDeserializer, DateTimeDeserializer}
+import org.joda.time.DateTime
 
 object Manager {
   val events = new ArrayList[Event]
 
   def initialize = {
     events.add(new Event)
-    events.add(new Event)
-    events.add(new Event)
 
     val eventType = new TypeToken[List[Event]]{}.getType
 
-    val gson = new Gson;
+    val gsonbuilder = new GsonBuilder;
+    gsonbuilder.registerTypeAdapter(classOf[DateTime], new DateTimeSerializer)
+    gsonbuilder.registerTypeAdapter(classOf[DateTime], new DateTimeDeserializer)
+    gsonbuilder.registerTypeAdapter(classOf[ArrayList[DateTime]], new ListDeserializer)
+    val gson = gsonbuilder.create
+    var json: String = ""
     for(event <- events) {
-      val json = gson.toJson(event);
+      json = gson.toJson(event);
       println(json)
     }
-    val load = "{\"string\":\"something\",\"notificationDates\":{\"underlying\":[{\"iMillis\":1269471292822,\"iChronology\":{\"iBase\":{\"iBase\":{\"iBase\":{\"iMinDaysInFirstWeek\":4}},\"iParam\":{\"iZone\":{\"iTransitions\":[-9223372036854775808,-2366757780000,-1691884800000,-1680573600000,-927511200000,-857257200000,-844556400000,-828226800000,-812502000000,-796777200000,-781052400000,-765327600000,-340844400000,-324514800000,-308790000000,-293065200000,-277340400000,-261615600000,-245890800000,-230166000000,-214441200000,-198716400000,-182991600000,-166662000000,-147913200000,-135212400000,323830800000,338950800000,354675600000,370400400000,386125200000,401850000000,417574800000,433299600000,449024400000,465354000000,481078800000,496803600000,512528400000,528253200000,543978000000,559702800000,575427600000,591152400000,606877200000,622602000000,638326800000,654656400000,670381200000,686106000000,701830800000,717555600000,733280400000,749005200000,764730000000,780454800000,796179600000,811904400000,828234000000,846378000000],\"iWallOffsets\":[2580000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000,7200000,3600000],\"iStandardOffsets\":[2580000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000,3600000],\"iNameKeys\":[\"LMT\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\",\"CEST\",\"CET\"],\"iTailZone\":{\"iStandardOffset\":3600000,\"iStartRecurrence\":{\"iOfYear\":{\"iMode\":\"u\",\"iMonthOfYear\":3,\"iDayOfMonth\":-1,\"iDayOfWeek\":7,\"iAdvance\":false,\"iMillisOfDay\":3600000},\"iNameKey\":\"CEST\",\"iSaveMillis\":3600000},\"iEndRecurrence\":{\"iOfYear\":{\"iMode\":\"u\",\"iMonthOfYear\":10,\"iDayOfMonth\":-1,\"iDayOfWeek\":7,\"iAdvance\":false,\"iMillisOfDay\":3600000},\"iNameKey\":\"CET\",\"iSaveMillis\":0},\"iID\":\"Europe/Oslo\"},\"iID\":\"Europe/Oslo\"},\"iID\":\"Europe/Oslo\"}}}}]}}";
-    val newObj = gson.fromJson(load, classOf[Event])
-    println(newObj.asInstanceOf[Event].string)
+    val newObj: Event = gson.fromJson(json, classOf[Event]).asInstanceOf[Event]
+    println("And now, for the result:")
+    println(newObj.string)
+    for(theDate: DateTime <- newObj.notificationDates) {
+      println(theDate.getDayOfMonth)
+    }
   }
 }

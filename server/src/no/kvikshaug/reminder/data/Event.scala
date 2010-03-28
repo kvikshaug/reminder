@@ -6,5 +6,6 @@ import org.joda.time.DateTime
 class Event {
   val notificationDates = new ArrayList[DateTime]
   notificationDates.add(new DateTime)
-  val string = "something"
+  notificationDates.add(new DateTime().plusDays(2).plusHours(3))
+  val string = "string contents :)"
 }
