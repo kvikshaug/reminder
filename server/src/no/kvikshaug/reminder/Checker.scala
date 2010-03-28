@@ -9,13 +9,13 @@ object Checker extends TimerTask {
 
   def run = {
     for(event <- Manager.events
-      if(notifyToday(event))
+      if(triggersToday(event))
     ) {
-      println("Supposed to send notification for: " + event)
+      notifyFor(event)
     }
   }
 
-  def notifyToday(event: Event): Boolean = {
+  def triggersToday(event: Event): Boolean = {
     val now = new DateTime
     for(dateTime <- event.notificationDates
       if(dateTime.getDayOfMonth.equals(now.getDayOfMonth));
@@ -24,5 +24,12 @@ object Checker extends TimerTask {
       return true
     }
     return false
+  }
+
+  def notifyFor(event: Event) = {
+    Mailer.mail("Reminder for "+event.name+" ("+event.occurs+")",
+              "This is a notification reminder for '"+event.name+"'.\n\n" +
+              "Message: "+event.message+"\n" +
+              "Occurs: "+event.occurs)
   }
 }

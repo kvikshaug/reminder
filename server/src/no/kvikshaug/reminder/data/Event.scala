@@ -4,8 +4,8 @@ import collection.jcl.ArrayList
 import org.joda.time.DateTime
 
 class Event {
+  var name: String
+  var message: String
+  var occurs: String
   val notificationDates = new ArrayList[DateTime]
-  notificationDates.add(new DateTime)
-  notificationDates.add(new DateTime().plusDays(2).plusHours(3))
-  val string = "string contents :)"
 }
