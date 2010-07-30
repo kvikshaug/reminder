@@ -8,11 +8,10 @@ import javax.mail.{Transport, Message, Session, Authenticator}
 
 object Mailer {
 
-  val auth = new SMTPAuthenticator
   val mailProps = new Properties
-  val mailPropsFile = new File("mail.properties")
 
   def initialize = {
+    val mailPropsFile = new File("mail.properties")
     if(!mailPropsFile.exists) {
       println("Error: Missing properties file '%s'.", mailPropsFile.getAbsolutePath)
       System.exit(-1)
@@ -21,7 +20,7 @@ object Mailer {
   }
 
   def mail(subject: String, messageText: String) = {
-    val sess = Session.getInstance(mailProps, auth)
+    val sess = Session.getInstance(mailProps, new SMTPAuthenticator)
     val message = new MimeMessage(sess);
     message.setSubject(subject);
     message.setText(messageText);

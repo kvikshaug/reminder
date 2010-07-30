@@ -1,2 +1,1 @@
-{"string":"string contents :)","notificationDates":{"underlying":["2010-03-28T19:53:10.333+02:00","2010-03-30T22:53:10.541+02:00"]}}
-{"string":"another string","notificationDates":{"underlying":["2010-03-28T19:53:10.333+02:00","2010-03-30T22:53:10.541+02:00"]}}
+{"notificationDates":{"underlying":["2010-04-17T21:18:38.454+02:00"]},"occurs":"occurs","message":"message","name":"Event name"}

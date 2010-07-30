@@ -4,4 +4,8 @@
 *.iml
 *.iws
 *.ipr
+target/
+project/boot/
+*.swp
+*~
 
