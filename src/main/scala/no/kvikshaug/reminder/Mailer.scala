@@ -13,7 +13,7 @@ object Mailer {
   def initialize = {
     val mailPropsFile = new File("mail.properties")
     if(!mailPropsFile.exists) {
-      println("Error: Missing properties file '%s'.", mailPropsFile.getAbsolutePath)
+      printf("Error: Missing properties file '%s'.\n", mailPropsFile.getAbsolutePath)
       System.exit(-1)
     }
     mailProps.load(new FileReader(mailPropsFile))
