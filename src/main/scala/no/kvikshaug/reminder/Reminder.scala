@@ -1,14 +1,27 @@
 package no.kvikshaug.reminder
 
-import java.util.{Date, Calendar, Timer}
+import java.util.Date
+import org.joda.time.DateTime
 
 object Reminder {
 
+  var events = List[Event]()
+
   def main(args: Array[String]) = {
-    // initialize all resources; Trigger will start a TimerTask (and therefore never end)
+    println("Starting reminder:")
+
+    // Load mail settings from file
     Mailer.initialize
+
+    // Load events from file
     GsonHandler.initialize
+    events = GsonHandler.load
+
+    // Schedule timer
     Trigger.initialize
+
+    // TODO calculate next notification and inform at startup
+    println("\nReady. Next notification: (TODO).")
   }
 
   /**
@@ -16,7 +29,7 @@ object Reminder {
    */
   def runChecks = {
     for(event <- events
-      if(triggersToday(event))
+      if(checkEvent(event))
     ) {
       notifyFor(event)
     }

@@ -1,8 +1,6 @@
 package no.kvikshaug.reminder
 
-import data.Event
-
-import java.util.TimerTask
+import java.util.{Timer, TimerTask}
 import org.joda.time.DateTime
 
 object Trigger extends TimerTask {
@@ -17,6 +15,7 @@ object Trigger extends TimerTask {
       .toDate() // as a java.util.Date
 
     timer.scheduleAtFixedRate(this, tomorrowNight, 1000 * 60 * 60 * 24)
+    println(" > Timer scheduled at each night, 00:00.")
   }
 
   def run = Reminder.runChecks

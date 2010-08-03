@@ -17,6 +17,7 @@ object Mailer {
       System.exit(-1)
     }
     mailProps.load(new FileReader(mailPropsFile))
+    println(" > Mail settings loaded from '" + mailPropsFile.getName + "'.")
   }
 
   def mail(subject: String, messageText: String) = {

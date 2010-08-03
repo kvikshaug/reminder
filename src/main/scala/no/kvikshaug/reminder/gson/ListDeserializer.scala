@@ -6,13 +6,11 @@ import com.google.gson.{JsonObject, JsonDeserializationContext, JsonElement, Jso
 
 class ListDeserializer extends JsonDeserializer[List[DateTime]] {
   def deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): List[DateTime] = {
-    val iterator = json.asInstanceOf[JsonObject].getAsJsonArray("underlying").iterator;
-    val list = List[DateTime]()
-    while(iterator.hasNext) {
-      val dateTimeString = iterator.next.toString
-      val dateTime = new DateTime((dateTimeString.substring(1, dateTimeString.length-1)))
-      dateTime :: list
+    var list = List[DateTime]()
+
+    for(str <- json.getAsString().split(",")) {
+      list = new DateTime(str) :: list
     }
-    return list
+    list
   }
 }

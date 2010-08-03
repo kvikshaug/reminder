@@ -1,4 +1,4 @@
-package no.kvikshaug.reminder.data
+package no.kvikshaug.reminder
 
 import org.joda.time.DateTime
 
