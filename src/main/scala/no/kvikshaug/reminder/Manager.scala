@@ -23,13 +23,12 @@ object Manager {
 
     // load events from disk
     load
-    println("some line")
   }
 
   def load = {
-    val iterator = scala.io.Source.fromFile(jsonFile).getLines
-    while(iterator.hasNext) {
-      val line = iterator.next
+    for(line <- scala.io.Source.fromFile(jsonFile).getLines
+      if(line.length() > 0)
+    ) {
       gson.fromJson(line.substring(0, line.length-1), classOf[Event]).asInstanceOf[Event] :: events
     }
   }
