@@ -3,22 +3,40 @@ package no.kvikshaug.reminder
 import java.util.{Date, Calendar, Timer}
 
 object Reminder {
-  def main(args: Array[String]) = {
-    // initialize the mailer (check that mail.properties file exists and is loadable)
-    Mailer.initialize
 
-    val timer = new Timer
-    timer.scheduleAtFixedRate(Trigger, tomorrowNight, 1000 * 60 * 60 * 24)
+  def main(args: Array[String]) = {
+    // initialize all resources; Trigger will start a TimerTask (and therefore never end)
+    Mailer.initialize
     GsonHandler.initialize
+    Trigger.initialize
   }
 
-  def tomorrowNight: Date = {
-    // not using joda-time here because we need to pass a java.util.Date to the Timer
-    // (but maybe we should -- and convert?)
-    val tomorrow = Calendar.getInstance
-    tomorrow.add(Calendar.DATE, 1)
-    tomorrow.set(Calendar.HOUR_OF_DAY, 0)
-    tomorrow.set(Calendar.MINUTE, 10) // ten past, just in case the timing is off when checking our current date
-    return tomorrow.getTime()
+  /**
+   * Called by Trigger every midnight. Checks if there is any event that has a notification for this date.
+   */
+  def runChecks = {
+    for(event <- events
+      if(triggersToday(event))
+    ) {
+      notifyFor(event)
+    }
+  }
+
+  def checkEvent(event: Event): Boolean = {
+    val now = new DateTime
+    for(dateTime <- event.notificationDates
+      if(dateTime.getDayOfMonth.equals(now.getDayOfMonth));
+      if(dateTime.getMonthOfYear.equals(now.getMonthOfYear))
+    ) {
+      return true
+    }
+    return false
+  }
+
+  def notifyFor(event: Event) = {
+    Mailer.mail("Reminder for "+event.name+" ("+event.occurs+")",
+              "This is a notification reminder for '"+event.name+"'.\n\n" +
+              "Message: "+event.message+"\n" +
+              "Occurs: "+event.occurs)
   }
 }

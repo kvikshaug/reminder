@@ -7,29 +7,19 @@ import org.joda.time.DateTime
 
 object Trigger extends TimerTask {
 
+  val timer = new Timer
+
+  def initialize = {
+    // we will trigger an event:
+    val tomorrowNight = new DateTime()
+      .plusDays(1) // tomorrow
+      .secondOfDay().withMinimumValue() // at 00:00:00
+      .toDate() // as a java.util.Date
+
+    timer.scheduleAtFixedRate(this, tomorrowNight, 1000 * 60 * 60 * 24)
+  }
+
   def run = {
-    for(event <- Manager.events
-      if(triggersToday(event))
-    ) {
-      notifyFor(event)
-    }
-  }
-
-  def triggersToday(event: Event): Boolean = {
-    val now = new DateTime
-    for(dateTime <- event.notificationDates
-      if(dateTime.getDayOfMonth.equals(now.getDayOfMonth));
-      if(dateTime.getMonthOfYear.equals(now.getMonthOfYear))
-    ) {
-      return true
-    }
-    return false
-  }
-
-  def notifyFor(event: Event) = {
-    Mailer.mail("Reminder for "+event.name+" ("+event.occurs+")",
-              "This is a notification reminder for '"+event.name+"'.\n\n" +
-              "Message: "+event.message+"\n" +
-              "Occurs: "+event.occurs)
+    Reminder.runChecks
   }
 }
