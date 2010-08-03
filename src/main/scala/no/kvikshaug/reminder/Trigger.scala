@@ -19,7 +19,5 @@ object Trigger extends TimerTask {
     timer.scheduleAtFixedRate(this, tomorrowNight, 1000 * 60 * 60 * 24)
   }
 
-  def run = {
-    Reminder.runChecks
-  }
+  def run = Reminder.runChecks
 }
