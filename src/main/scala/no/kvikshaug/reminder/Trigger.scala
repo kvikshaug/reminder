@@ -5,7 +5,7 @@ import data.Event
 import java.util.TimerTask
 import org.joda.time.DateTime
 
-object Checker extends TimerTask {
+object Trigger extends TimerTask {
 
   def run = {
     for(event <- Manager.events

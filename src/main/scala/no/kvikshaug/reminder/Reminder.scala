@@ -8,7 +8,7 @@ object Reminder {
     Mailer.initialize
 
     val timer = new Timer
-    timer.scheduleAtFixedRate(Checker, tomorrowNight, 1000 * 60 * 60 * 24)
+    timer.scheduleAtFixedRate(Trigger, tomorrowNight, 1000 * 60 * 60 * 24)
     GsonHandler.initialize
   }
 
