@@ -9,7 +9,7 @@ object Reminder {
 
     val timer = new Timer
     timer.scheduleAtFixedRate(Checker, tomorrowNight, 1000 * 60 * 60 * 24)
-    Manager.initialize
+    GsonHandler.initialize
   }
 
   def tomorrowNight: Date = {

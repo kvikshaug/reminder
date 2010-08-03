@@ -6,9 +6,8 @@ import gson.{ListDeserializer, DateTimeDeserializer}
 import org.joda.time.DateTime
 import java.io.File
 
-object Manager {
+object GsonHandler {
   val jsonFile = new File("events.json")
-  val events = List[Event]()
   val gsonbuilder = new GsonBuilder
   gsonbuilder.registerTypeAdapter(classOf[DateTime], new DateTimeSerializer)
   gsonbuilder.registerTypeAdapter(classOf[DateTime], new DateTimeDeserializer)
@@ -17,23 +16,26 @@ object Manager {
 
   def initialize = {
     if(!jsonFile.exists) {
-      printf("Error: missing events file, expected path: '%s'.\n", jsonFile.getAbsolutePath)
+      // TODO ask if we should create it instead of telling the user to (e.g. "Start with an empty events file?")
+      printf("Error: missing events file, expected path: '%s'. You can create an empty one if you have no events.\n", jsonFile.getAbsolutePath)
       System.exit(-1)
     }
 
     // load events from disk
     load
+    println("some line")
   }
 
-  def load = {
-    for(line <- scala.io.Source.fromFile(jsonFile).getLines
-      if(line.length() > 0)
-    ) {
+  def load: List[Event] = {
+    val events = List[Event]()
+    for(line <- scala.io.Source.fromFile(jsonFile).getLines) {
+      println(line)
       gson.fromJson(line.substring(0, line.length-1), classOf[Event]).asInstanceOf[Event] :: events
     }
+    events
   }
 
-  def save = {
+  def save(events: List[Event]) = {
     val out = new java.io.FileWriter(jsonFile)
     for(event <- events) {
       out.write(gson.toJson(event))
