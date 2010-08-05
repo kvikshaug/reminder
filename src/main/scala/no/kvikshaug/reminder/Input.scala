@@ -9,6 +9,8 @@ object Input extends Runnable {
   val helptext = """
 Commands:
 new event  -- Create a new event
+ne         -- Create a new event
+next N     -- Show when the next N events occur
 exit       -- Exit the application
 quit       -- Exit the application
 Note: For now, to modify or remove an event, edit the events.json file manually.
@@ -20,10 +22,28 @@ Note: For now, to modify or remove an event, edit the events.json file manually.
         case "help" => println(helptext)
         case "exit" => println("Don't forget me!"); System.exit(0)
         case "quit" => println("Don't forget me!"); System.exit(0)
+        case "new event" => addNewEvent
         case "ne" => addNewEvent
         case "" => Unit // ignore
-        case cmd => println("Unknown command '" + cmd + "'.")
+        case cmd =>
+          if(cmd.startsWith("next")) {
+            showNext(cmd)
+          } else {
+            println("Unknown command '" + cmd + "'.")
+          }
       }
+    }
+  }
+
+  def showNext(nStr: String) = {
+    try {
+      val n = Integer.parseInt(nStr.replace("next", "").trim())
+      println("\nNext " + n + " events:")
+      for(e <- Reminder.nextNEvents(n)) {
+        println(e.textualDate + ": \t" + e.name + " (" + e.notifyDates + ")")
+      }
+    } catch {
+      case e => println("Invalid count 'N'!")
     }
   }
 

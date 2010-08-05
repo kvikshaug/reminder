@@ -2,13 +2,13 @@ package no.kvikshaug.reminder
 
 import org.joda.time.DateTime
 
-case class Event(val name: String, val month: Int, val day: Int, val notifyList: List[Int]) {
+case class Event(val name: String, val month: Int, val date: Int, val notifyList: List[Int]) {
 
   // GSON needs a no-args constructor (http://sites.google.com/site/gson/gson-user-guide#TOC-Writing-an-Instance-Creator)
   // i don't know if creating that this way is good practice/the best way (and don't think it is)
   def this() = this("", 0, 0, List[Int]())
 
-  def date(): String = day + ". " + Reminder.textualMonthOf(month)
+  def textualDate(): String = date + ". " + Reminder.textualMonthOf(month)
 
   /**
    * Pretty-print all the notification dates
@@ -27,4 +27,22 @@ case class Event(val name: String, val month: Int, val day: Int, val notifyList:
     }
     str.toString
   }
+
+  /**
+   * True if this event occurs before the event we're comparing to,
+   * at the time the check is performed
+   */
+  def <(e: Event): Boolean = {
+    val now = new DateTime()
+    var thisEvent = new DateTime().dayOfMonth().setCopy(date).monthOfYear().setCopy(month)
+    var thatEvent = new DateTime().dayOfMonth().setCopy(e.date).monthOfYear().setCopy(e.month)
+    if(thisEvent.isBefore(now)) {
+      thisEvent = thisEvent.plusYears(1)
+    }
+    if(thatEvent.isBefore(now)) {
+      thatEvent = thatEvent.plusYears(1)
+    }
+    return thisEvent.isBefore(thatEvent)
+  }
 }
+

@@ -22,8 +22,11 @@ object Reminder {
     // Listen for and handle keyboard input
     new Thread(Input).start
 
-    // TODO calculate next notification and inform at startup
-    println("\nReady. Next notification: (TODO).")
+    val nextEvent = nextNEvents(3)
+    println("\nReady. Next three events will be:")
+    for(i <- 0 to 2) {
+      println(nextEvent(i).textualDate + ": \t" + nextEvent(i).name + " (" + nextEvent(i).notifyDates + ")")
+    }
   }
 
   /**
@@ -35,16 +38,18 @@ object Reminder {
     for(event <- events) {
       for(diff <- event.notifyList) {
         val now = new DateTime().plusDays(diff)
-        if(now.getMonthOfYear == event.month && now.getDayOfMonth == event.day) {
+        if(now.getMonthOfYear == event.month && now.getDayOfMonth == event.date) {
           hits = hits + 1
-          Mailer.mail("Reminder: "+event.name+" ("+event.date+")",
+          Mailer.mail("Reminder: "+event.name+" ("+event.textualDate+")",
                       "The event '"+event.name+"' occurs "+event.date+".\n" +
                       "You'll be reminded "+event.notifyDates+" days before that.")
         }
       }
     }
-    // TODO calculate next notification and inform at startup
-    println(hits + " notifications sent. Next notification: (TODO)")
+    println(hits + " notifications sent. Next three events will be:")
+    for(i <- 0 to 2) {
+      println(nextEvent(i).textualDate + ": \t" + nextEvent(i).name + " (" + nextEvent(i).notifyDates + ")")
+    }
   }
 
   def monthOf(month: String): Int = month.toLowerCase match {
@@ -78,4 +83,20 @@ object Reminder {
     case 12 => "december"
     case _  => "invalid month"
   }
+
+  def nextNEvents(n: Int): List[Event] = {
+    val newEvents = events.sortWith(_ < _)
+    var retEvents = List[Event]()
+    var o = 0
+    if(n > events.size) {
+      o = events.size
+    } else {
+      o = n
+    }
+    for(i <- 0 to (o-1)) {
+      retEvents = retEvents :+ newEvents(i)
+    }
+    retEvents
+  }
+
 }
