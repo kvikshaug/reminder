@@ -4,25 +4,24 @@ Sends you reminder emails for birthdays or other yearly occurences.
 
 ## Details
 
-It consists of
+The app has a list of 'events', which consists of:
 
-1. A *server*
-2. A *GUI client*
+* A name
+* A date and month (when in the year it occurs)
+* A list of the number of days in which you will be notified in advance (0 = same day)
 
-The server runs constantly on some remote machine. It will have a list of events/persons, and reminder rules for each of them (for being reminded a week before the event, a day before, both, etc.). Each night, at 00:00, the list is checked, and if a rule is activated, then an email is sent to your email address.
+The app runs continuously on a server, and will send a notification of any event closing in each midnight.
 
-The system has two open ports for management/communication:
+You specify how many days in advance you want to be notified, and you can be notified from 0 to N times for each event.
 
-1. One for the GUI client, which can read and change system data (events, rules, email addresses, etc.)
-2. One you may connect to via telnet and enter simple commands, for example "next 10" to view the next 10 events and their dates, for easy accessibility (e.g. through shell scripts).
+The notification comes in form of an email. You will need to have SMTP access to an email server which will be used to send the email.
 
-*There is no authentication*, because in my case the server is behind a NAT and the ports are not open externally, so there is no need for it.
+## Future development
 
-*I'm not sure how the email system will work. At the moment, I've only managed to get it working by sending from my own GMail account.*
-
-The server runs on a constantly running machine, and is managed from the GUI client.
+I hope to have it listen on a port which supports basic commands, like "next 10" to view the next 10 upcoming events.
 
 ## Warning
-1. As of this writing, I haven't actually written anything. So the above is the PLANS I have for the application.
-2. The application is written in Scala, which I don't have much experience with. So expect both bugs and bad design. (I expect it will be a good learning experience for me, though).
-3. This is another of those "reinventing the wheel"-apps I like to write because I'm not satisified with the existing solutions out there. *If* I get a smartphone with google calendar synchronization, I will probably use that instead.
+
+1. This application is pretty pointless, there are better ways to be reminded of such events. Online calendar synchronization, etc.
+2. It is also written in bad Scala style, because I wrote it to *learn* Scala. So expect both bugs and bad design.
+
