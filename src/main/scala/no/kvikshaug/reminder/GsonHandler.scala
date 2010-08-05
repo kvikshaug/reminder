@@ -8,8 +8,8 @@ import java.io.File
 object GsonHandler {
   val jsonFile = new File("events.json")
   val gsonbuilder = new GsonBuilder
-  gsonbuilder.registerTypeAdapter(classOf[List[DateTime]], new ListSerializer)
-  gsonbuilder.registerTypeAdapter(classOf[List[DateTime]], new ListDeserializer)
+  gsonbuilder.registerTypeAdapter(classOf[List[Int]], new ListSerializer)
+  gsonbuilder.registerTypeAdapter(classOf[List[Int]], new ListDeserializer)
   val gson = gsonbuilder.create
 
   def initialize = {
@@ -21,11 +21,11 @@ object GsonHandler {
   }
 
   def load: List[Event] = {
-    val events = List[Event]()
+    var events = List[Event]()
     for(line <- scala.io.Source.fromFile(jsonFile).getLines
       if(line.length() > 0)
     ) {
-      gson.fromJson(line, classOf[Event]).asInstanceOf[Event] :: events
+      events = gson.fromJson(line, classOf[Event]).asInstanceOf[Event] :: events
     }
     println(" > " + events.size + " events loaded from '" + jsonFile.getName + "'.")
     events
@@ -35,6 +35,7 @@ object GsonHandler {
     val out = new java.io.FileWriter(jsonFile)
     for(event <- events) {
       out.write(gson.toJson(event))
+      out.write("\n")
     }
     out.write("\n")
     out.close

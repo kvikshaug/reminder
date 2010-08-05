@@ -4,13 +4,17 @@ import org.joda.time.DateTime
 import java.lang.reflect.Type
 import com.google.gson.{JsonElement, JsonPrimitive, JsonSerializationContext, JsonSerializer}
 
-class ListSerializer extends JsonSerializer[List[DateTime]] {
-  def serialize(src: List[DateTime], typeOfSrc: Type, context: JsonSerializationContext): JsonElement = {
-    val str = new StringBuilder
-    for(dt <- src) {
-      // comma-separate dates in one string
-      str.append(dt.toString()).append(",")
+class ListSerializer extends JsonSerializer[List[Int]] {
+  def serialize(src: List[Int], typeOfSrc: Type, context: JsonSerializationContext): JsonElement = {
+    if(src.size == 0) {
+      return new JsonPrimitive("")
     }
-    new JsonPrimitive(str.toString);
+    val strb = new StringBuilder
+    for(int <- src) {
+      // comma-separate dates in one string
+      strb.append(int).append(",")
+    }
+    val str = strb.toString
+    new JsonPrimitive(str.substring(0, str.length()-1))
   }
 }
