@@ -47,6 +47,7 @@ object Reminder {
       }
     }
     println(hits + " notifications sent. Next three events will be:")
+    val nextEvent = nextNEvents(3)
     for(i <- 0 to 2) {
       println(nextEvent(i).textualDate + ": \t" + nextEvent(i).name + " (" + nextEvent(i).notifyDates + ")")
     }
