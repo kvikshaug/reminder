@@ -23,9 +23,13 @@ object Reminder {
     new Thread(Input).start
 
     val nextEvents = nextNEvents(3)
-    println("\nReady. Next three events will be:")
-    for(ne <- nextEvents) {
-      println(ne.textualDate + ": \t" + ne.name + " (" + ne.notifyDates + ")")
+    if(nextEvents.size == 0) {
+      println("\nReady. No events are scheduled.")
+    } else {
+      println("\nReady. Next " + nextEvents.size + " events will be:")
+      for(ne <- nextEvents) {
+        println(ne.textualDate + ": \t" + ne.name + " (" + ne.notifyDates + ")")
+      }
     }
   }
 
