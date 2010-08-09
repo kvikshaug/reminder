@@ -45,7 +45,7 @@ object Reminder {
         if(now.getMonthOfYear == event.month && now.getDayOfMonth == event.date) {
           hits = hits + 1
           Mailer.mail("Reminder: "+event.name+" ("+event.textualDate+")",
-                      "The event '"+event.name+"' occurs "+event.date+".\n" +
+                      "The event '"+event.name+"' occurs "+event.textualDate+".\n" +
                       "You'll be reminded "+event.notifyDates+" days before that.")
         }
       }
