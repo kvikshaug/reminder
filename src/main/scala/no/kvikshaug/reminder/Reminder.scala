@@ -22,10 +22,10 @@ object Reminder {
     // Listen for and handle keyboard input
     new Thread(Input).start
 
-    val nextEvent = nextNEvents(3)
+    val nextEvents = nextNEvents(3)
     println("\nReady. Next three events will be:")
-    for(i <- 0 to 2) {
-      println(nextEvent(i).textualDate + ": \t" + nextEvent(i).name + " (" + nextEvent(i).notifyDates + ")")
+    for(ne <- nextEvents) {
+      println(ne.textualDate + ": \t" + ne.name + " (" + ne.notifyDates + ")")
     }
   }
 
