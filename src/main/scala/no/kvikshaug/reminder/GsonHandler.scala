@@ -14,9 +14,19 @@ object GsonHandler {
 
   def initialize = {
     if(!jsonFile.exists) {
-      // TODO ask if we should create it instead of telling the user to (e.g. "Start with an empty events file?")
-      printf("Error: missing events file, expected path: '%s'. You can create an empty one if you have no events.\n", jsonFile.getAbsolutePath)
-      System.exit(-1)
+      printf("Missing events file (%s). Create it? [y/n] ", jsonFile.getAbsolutePath)
+      if(new java.util.Scanner(System.in).nextLine.toLowerCase.equals("y")) {
+        if(!jsonFile.createNewFile) {
+          printf("Unable to create '%s'. Permission problem?", jsonFile.getAbsolutePath)
+          println("Cannot continue without an events file, exiting.")
+          System.exit(-1)
+        } else {
+          println("Created empty events file '%s'.")
+        }
+      } else {
+        println("Cannot continue without an events file, exiting.")
+        System.exit(-1)
+      }
     }
   }
 
