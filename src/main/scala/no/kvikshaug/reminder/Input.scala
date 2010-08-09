@@ -11,6 +11,7 @@ Commands:
 new event  -- Create a new event
 ne         -- Create a new event
 next N     -- Show when the next N events occur
+find X     -- Search for the name of an event
 exit       -- Exit the application
 quit       -- Exit the application
 Note: For now, to modify or remove an event, edit the events.json file manually.
@@ -28,6 +29,8 @@ Note: For now, to modify or remove an event, edit the events.json file manually.
         case cmd =>
           if(cmd.startsWith("next")) {
             showNext(cmd)
+          } else if(cmd.startsWith("find")) {
+            findEvent(cmd)
           } else {
             println("Unknown command '" + cmd + "'.")
           }
@@ -44,6 +47,28 @@ Note: For now, to modify or remove an event, edit the events.json file manually.
       }
     } catch {
       case e => println("Invalid count 'N'!")
+    }
+  }
+
+  def findEvent(xCmd: String): Unit = {
+    if(xCmd.trim.equals("find")) {
+      println("Find what?")
+      return
+    }
+
+    val x = xCmd.replace("find", "").trim.toLowerCase
+    var hits = List[Event]()
+    for(e <- Reminder.events) {
+      if(e.name.toLowerCase.contains(x)) {
+        hits = e :: hits
+      }
+    }
+    if(hits.size == 0) {
+      println("Sorry, no event matches that.")
+    } else {
+      for(h <- hits.sortWith(_ < _)) {
+        println(h.textualDate + ": \t" + h.name + " (" + h.notifyDates + ")")
+      }
     }
   }
 
