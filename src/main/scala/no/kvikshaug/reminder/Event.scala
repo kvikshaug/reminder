@@ -34,8 +34,8 @@ case class Event(val name: String, val month: Int, val date: Int, val notifyList
    */
   def <(e: Event): Boolean = {
     val now = new DateTime()
-    var thisEvent = new DateTime().dayOfMonth().setCopy(date).monthOfYear().setCopy(month)
-    var thatEvent = new DateTime().dayOfMonth().setCopy(e.date).monthOfYear().setCopy(e.month)
+    var thisEvent = new DateTime().monthOfYear().setCopy(month).dayOfMonth().setCopy(date)
+    var thatEvent = new DateTime().monthOfYear().setCopy(e.month).dayOfMonth().setCopy(e.date)
     if(thisEvent.isBefore(now)) {
       thisEvent = thisEvent.plusYears(1)
     }
