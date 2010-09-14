@@ -13,19 +13,14 @@ case class Event(val name: String, val month: Int, val date: Int, val notifyList
   /**
    * Pretty-print all the notification dates
    */
-  def notifyDates(): String = {
-    val str = new StringBuilder
-    var i = 0
-    val last = notifyList.size - 1
-    while(i < notifyList.size) {
-      i match {
-        case 0 => str.append(notifyList(i))
-        case `last` => str.append(" and ").append(notifyList(i))
-        case _ => str.append(", ").append(notifyList(i))
-      }
-      i = i + 1
-    }
-    str.toString
+  def notifyDates: String = join(notifyList)
+
+  def join(list : List[Int]): String = list match {
+    case List() => ""
+    case List(x) => x.toString
+    case List(x,y) => x + " and " + y
+    case List(x,y,z) => x + ", " + y + ", and " + z
+    case _ => list(0) + ", " + join(list.tail)
   }
 
   /**
