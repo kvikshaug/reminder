@@ -39,16 +39,16 @@ object Reminder {
   def runChecks = {
     println("\nCurrent time is " + new DateTime().toString() + ": Running checks.")
     var hits = 0
-    for(event <- events) {
-      for(diff <- event.notifyList) {
-        val now = new DateTime().plusDays(diff)
-        if(now.getMonthOfYear == event.month && now.getDayOfMonth == event.date) {
-          hits = hits + 1
-          Mailer.mail("Reminder: "+event.name+" ("+event.textualDate+")",
-                      "The event '"+event.name+"' occurs "+event.textualDate+".\n" +
-                      "You'll be reminded "+event.notifyDates+" days before that.")
-        }
-      }
+    for {
+      event <- events
+      diff <- event.notifyList
+      val now = new DateTime().plusDays(diff)
+      if(now.getMonthOfYear == event.month && now.getDayOfMonth == event.date)
+    } {
+      hits = hits + 1
+      Mailer.mail("Reminder: "+event.name+" ("+event.textualDate+")",
+                  "The event '"+event.name+"' occurs "+event.textualDate+".\n" +
+                  "You'll be reminded "+event.notifyDates+" days before that.")
     }
     println(hits + " notifications sent. Next three events will be:")
     val nextEvent = nextNEvents(3)
