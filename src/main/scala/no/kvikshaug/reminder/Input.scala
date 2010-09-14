@@ -57,12 +57,7 @@ Note: For now, to modify or remove an event, edit the events.json file manually.
     }
 
     val x = xCmd.replace("find", "").trim.toLowerCase
-    var hits = List[Event]()
-    for(e <- Reminder.events) {
-      if(e.name.toLowerCase.contains(x)) {
-        hits = e :: hits
-      }
-    }
+    val hits = Reminder.events.filter{_.name.toLowerCase.contains(x)}
     if(hits.size == 0) {
       println("Sorry, no event matches that.")
     } else {
